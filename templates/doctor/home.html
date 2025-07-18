@@ -1,0 +1,63 @@
+{% extends 'base.html' %} {% block scripts %}
+<script>
+    const uname = "{{ user.name }}";
+</script>
+<script src="{{ url_for('static', path='js/common.js?v1') }}" defer></script>
+<script src="{{ url_for('static', path='js/doctor.js?v1') }}" defer></script>
+{% endblock %} {% block content %}
+
+<div class="flex flex-col lg:flex-row gap-4 items-center">
+    {% include 'chatSec.html' %}
+    <div id="healthMetrics" class="lg:w-1/3 bg-white rounded-lg shadow-lg p-4 h-[calc(100vh-300px)]">
+        <h2 class="text-xl font-semibold mb-4">Métriques de Santé du Patient</h2>
+        <div id="metrics" class="hidden">
+            <div class="space-y-4">
+                <div class="bg-blue-100 p-3 rounded-lg">
+                    <h3 class="font-medium text-blue-800">Fréquence Cardiaque</h3>
+                    <p id="heartRate" class="text-2xl font-bold text-blue-600">-- bpm</p>
+                </div>
+                <div class="bg-green-100 p-3 rounded-lg">
+                    <h3 class="font-medium text-green-800">Niveau d'Oxygène</h3>
+                    <p id="oxygenLevel" class="text-2xl font-bold text-green-600">--%</p>
+                </div>
+                <div class="bg-yellow-100 p-3 rounded-lg">
+                    <h3 class="font-medium text-yellow-800">Température Corporelle</h3>
+                    <p id="bodyTemperature" class="text-2xl font-bold text-yellow-600">--.-- °C</p>
+                </div>
+                <div class="bg-purple-100 p-3 rounded-lg">
+                    <h3 class="font-medium text-purple-800">Pas Quotidiens</h3>
+                    <p id="dailySteps" class="text-2xl font-bold text-purple-600">-- pas</p>
+                </div>
+            </div>
+            <div class="mt-4">
+                <p class="text-sm text-gray-600">Dernière mise à jour: <span id="lastUpdate">--:--:--</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Fonction pour simuler les données de santé
+    function simulateHealthData() {
+        const heartRate = Math.floor(Math.random() * (100 - 60 + 1)) + 60;
+        const oxygenLevel = Math.floor(Math.random() * (100 - 95 + 1)) + 95;
+        const bodyTemperature = (Math.random() * (37.5 - 36.5) + 36.5).toFixed(1);
+        const dailySteps = Math.floor(Math.random() * 10000);
+
+        document.getElementById('heartRate').textContent = `${heartRate} bpm`;
+        document.getElementById('oxygenLevel').textContent = `${oxygenLevel}%`;
+        document.getElementById('bodyTemperature').textContent = `${bodyTemperature} °C`;
+        document.getElementById('dailySteps').textContent = `${dailySteps} pas`;
+
+        const now = new Date();
+        document.getElementById('lastUpdate').textContent = now.toLocaleTimeString();
+    }
+
+    // Simuler les données initiales
+    simulateHealthData();
+
+    // Mettre à jour les données toutes les 5 secondes
+    setInterval(simulateHealthData, 3000);
+</script>
+
+{% endblock %}
